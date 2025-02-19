@@ -1,0 +1,194 @@
+{
+  "Id": "SomaCube",
+  "DisplayName": "Soma Cube",
+  "OutputFileName": "SomaCubeSolutions",
+  "CubeSize": 3,
+  "UpdateInterval": 150,
+  "Verbose": true,
+  "PuzzlePieces": [
+    {
+      "Id": 0,
+      "Symbol": "0",
+      "Description": "V",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 0,
+          "Y": 1,
+          "Z": 0
+        }
+      ]
+    },
+    {
+      "Id": 1,
+      "Symbol": "1",
+      "Description": "L",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 2,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 2,
+          "Y": 1,
+          "Z": 0
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "Symbol": "2",
+      "Description": "T",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 2,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 1,
+          "Z": 0
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "Symbol": "3",
+      "Description": "Z",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 1,
+          "Z": 0
+        },
+        {
+          "X": 2,
+          "Y": 1,
+          "Z": 0
+        }
+      ]
+    },
+    {
+      "Id": 4,
+      "Symbol": "4",
+      "Description": "Right Twist",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 1,
+          "Z": 0
+        },
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 1
+        }
+      ]
+    },
+    {
+      "Id": 5,
+      "Symbol": "5",
+      "Description": "Left Twist",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 1,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 1,
+          "Z": 1
+        }
+      ]
+    },
+    {
+      "Id": 6,
+      "Symbol": "6",
+      "Description": "Pinnacle",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 0,
+          "Y": 1,
+          "Z": 0
+        },
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 1
+        }
+      ]
+    }
+  ]
+}

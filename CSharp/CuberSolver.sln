@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCubeSolver", "NetCubeSolver\NetCubeSolver.csproj", "{84BB4ADF-ECC6-4177-8CD5-F639DC0F189B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CubeSolver", "CubeSolver\CubeSolver.csproj", "{C3411B4F-56C5-44D4-8F56-446FD7911C41}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84BB4ADF-ECC6-4177-8CD5-F639DC0F189B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84BB4ADF-ECC6-4177-8CD5-F639DC0F189B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84BB4ADF-ECC6-4177-8CD5-F639DC0F189B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84BB4ADF-ECC6-4177-8CD5-F639DC0F189B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3411B4F-56C5-44D4-8F56-446FD7911C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3411B4F-56C5-44D4-8F56-446FD7911C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3411B4F-56C5-44D4-8F56-446FD7911C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3411B4F-56C5-44D4-8F56-446FD7911C41}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
