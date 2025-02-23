@@ -1,5 +1,6 @@
 using System.Text.Json;
 using NetCubeSolver;
+using NetCubeSolver.Benchmarking;
 
 namespace CubeSolver.Utils;
 
@@ -9,8 +10,15 @@ public class ProgramUtils
 
     private static int _indent = 0;
     
-    public static string WorkingDirectory;
+    public static string WorkingDirectory { get; private set; }
     public static string OutputDirectory;
+    public static string BenchmarkDirectory { get; private set; }
+
+    public static void SetupWorkingDirectory(string workingDirectory)
+    {
+        WorkingDirectory = workingDirectory;
+        BenchmarkDirectory = Path.Combine(WorkingDirectory, "Benchmarks");
+    }
 
     public static void Write(string text="")
     {
@@ -124,6 +132,17 @@ public class ProgramUtils
         Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configs[configFile].FullName));
         config.InitializePieces();
         return config;
+        
+    }
+    
+    public static BenchmarkSettings GetBenchmarkSettingsFromUser()
+    {
+        DirectoryInfo dir = new DirectoryInfo(BenchmarkDirectory);
+        var configs = dir.GetFiles().Where(f => f.Extension == ".json").ToList();
+        var configNames = configs.Select(x => x.Name).ToArray();
+        var configFile = GetUserSelection("Select a benchmark file to load:", configNames);
+        BenchmarkSettings settings = JsonSerializer.Deserialize<BenchmarkSettings>(File.ReadAllText(configs[configFile].FullName));
+        return settings;
         
     }
 }

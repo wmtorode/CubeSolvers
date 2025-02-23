@@ -3,25 +3,42 @@ using System.Diagnostics;
 using System.Text;
 using CubeSolver.Utils;
 using NetCubeSolver;
+using NetCubeSolver.ExactCover;
 
 namespace CubeSolver.Tools;
 
-public class CubeSolver: BaseSolver, ITool
+public class CubeSolver: BaseSolver, ITool, ISolver
 {
     public string Name { get; } = "Cube Solver";
 
     
     public bool Run()
     {
-        CubeConfig = ProgramUtils.GetConfigFromUser();
+        var config = ProgramUtils.GetConfigFromUser();
+        Solve(config, 0, 0, true, true);
+        return true;
+    }
+
+
+    public void AddSolutions(Dictionary<string, PuzzleSolution> solutions, int duplicates)
+    {
+        
+    }
+
+    public void Solve(Config config, int initialDepth, int maxThreads, bool writeSolutions, bool verbose)
+    {
+        CubeConfig = config;
 
         Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.GetPuzzlePieceSymbolLut());
         
+        if (verbose)
         // print out some basics about the piece
-        ProgramUtils.WriteFilledLine('=', CubeConfig.DisplayName);
-        Console.WriteLine();
-        PrintPieceData();
-        Console.WriteLine();
+        {
+            ProgramUtils.WriteFilledLine('=', CubeConfig.DisplayName);
+            Console.WriteLine();
+            PrintPieceData();
+            Console.WriteLine();
+        }
         
         var totalWatch = Stopwatch.StartNew();
         
@@ -31,7 +48,10 @@ public class CubeSolver: BaseSolver, ITool
         GenerateCoverMatrix();
         watch.Stop();
         
-        ProgramUtils.WriteFilledLine('-', $"Cover Matrix Generation took {watch.ElapsedMilliseconds:n0} ms");
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-', $"Cover Matrix Generation took {watch.ElapsedMilliseconds:n0} ms");
+        }
         
         // Create the Nodes we will need to run the "Dancing Links" on
         var dancingLinks = CreateDancingLinks();
@@ -40,8 +60,11 @@ public class CubeSolver: BaseSolver, ITool
         dancingLinks.Search();
         watch.Stop();
         
-        ProgramUtils.WriteFilledLine('-', $"Dancing Links Generation took {watch.ElapsedMilliseconds:n0} ms and found {dancingLinks.Solutions.Count:n0} solutions");
-
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-',
+                $"Dancing Links Generation took {watch.ElapsedMilliseconds:n0} ms and found {dancingLinks.Solutions.Count:n0} solutions");
+        }
         int zDiv = CubeConfig.CubeSize * CubeConfig.CubeSize;
 
         watch = Stopwatch.StartNew();
@@ -55,7 +78,11 @@ public class CubeSolver: BaseSolver, ITool
         }
         watch.Stop();
         
-        ProgramUtils.WriteFilledLine('-', $"Conversion from Matrix Solutions to Puzzle Solutions took {watch.ElapsedMilliseconds:n0} ms");
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-',
+                $"Conversion from Matrix Solutions to Puzzle Solutions took {watch.ElapsedMilliseconds:n0} ms");
+        }
         
         watch = Stopwatch.StartNew();
         Dictionary<string, PuzzleSolution> uniqueSolutions = new();
@@ -75,27 +102,42 @@ public class CubeSolver: BaseSolver, ITool
         }
         watch.Stop();
         
-        ProgramUtils.WriteFilledLine('-', $"Deduplication took {watch.ElapsedMilliseconds:n0} ms and found {uniqueSolutions.Count:n0} unique solutions, discarded: {duplicateSolutions:n0} duplicates");
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-',
+                $"Deduplication took {watch.ElapsedMilliseconds:n0} ms and found {uniqueSolutions.Count:n0} unique solutions, discarded: {duplicateSolutions:n0} duplicates");
+        }
         
         watch = Stopwatch.StartNew();
         var keys = uniqueSolutions.Keys.ToArray();
         Array.Sort(keys);
         watch.Stop();
         
-        ProgramUtils.WriteFilledLine('-', $"Sorting Solutions took {watch.ElapsedMilliseconds:n0} ms");
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-', $"Sorting Solutions took {watch.ElapsedMilliseconds:n0} ms");
+        }
+        
+        if (writeSolutions)
+        {
+            watch = Stopwatch.StartNew();
+            WriteToTextFile(uniqueSolutions, keys);
+            watch.Stop();
 
-        watch = Stopwatch.StartNew();
-        WriteToTextFile(uniqueSolutions, keys);
-        watch.Stop(); 
-        
-        ProgramUtils.WriteFilledLine('-', $"Write to text file took {watch.ElapsedMilliseconds:n0} ms");
-        
+            if (verbose)
+            {
+                ProgramUtils.WriteFilledLine('-', $"Write to text file took {watch.ElapsedMilliseconds:n0} ms");
+            }
+        }
         totalWatch.Stop();
-        ProgramUtils.WriteFilledLine('-', $"Total Time Elapsed : {totalWatch.ElapsedMilliseconds:n0} ms");
         
-        return true;
+        SolveTime = totalWatch.ElapsedMilliseconds;
+        
+        if (verbose)
+        {
+            ProgramUtils.WriteFilledLine('-', $"Total Time Elapsed : {totalWatch.ElapsedMilliseconds:n0} ms");
+        }
     }
-    
-    
-    
+
+    public long SolveTime { get;  private set; }
 }
