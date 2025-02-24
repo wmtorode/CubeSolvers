@@ -15,7 +15,8 @@ internal class Program
         new PieceInfo(),
         new CoverMatrixVisualizer(),
         new CubeSolver.Tools.CubeSolver(),
-        new ThreadedCubeSolver()
+        new ThreadedCubeSolver(),
+        new BenchmarkRunner()
     };
 
     private static void Main(string[] args)
@@ -25,11 +26,11 @@ internal class Program
         ProgramUtils.WriteFilledLine('#');
         ProgramUtils.Write();
         
-        ProgramUtils.WorkingDirectory = Directory.GetCurrentDirectory();
+        ProgramUtils.SetupWorkingDirectory(Directory.GetCurrentDirectory());
 
         if (args.Length > 0)
         {
-            ProgramUtils.WorkingDirectory = args[0];
+            ProgramUtils.SetupWorkingDirectory(args[0]);
         }
         
         if (args.Length > 1)

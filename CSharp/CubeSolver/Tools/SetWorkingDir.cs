@@ -8,7 +8,7 @@ public class SetWorkingDir: ITool
     public bool Run()
     {
         var newWorkingDir = ProgramUtils.GetUserInput("New Config Directory");
-        ProgramUtils.WorkingDirectory = newWorkingDir;
+        ProgramUtils.SetupWorkingDirectory(newWorkingDir);
         
         var newOutoutDir = ProgramUtils.GetUserInput("New Output Directory");
         ProgramUtils.OutputDirectory = newOutoutDir;

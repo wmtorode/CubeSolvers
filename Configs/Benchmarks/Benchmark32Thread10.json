@@ -1,0 +1,21 @@
+{
+    "Id": "Benchmark32-10",
+    "Name": "32 Threads, 10 Iterations",
+    "Iterations": 10,
+    "MultiThreaded": true,
+    "MaxThreads": 32,
+    "Configurations": [
+        {
+            "ConfigId": "SomaCube",
+            "InitialDepth": 1
+        },
+        {
+            "ConfigId": "TetrisCube",
+            "InitialDepth": 2
+        },
+        {
+            "ConfigId": "BedlamCube",
+            "InitialDepth": 2
+        }
+    ]
+}
