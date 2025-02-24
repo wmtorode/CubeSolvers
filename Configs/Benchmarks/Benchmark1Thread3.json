@@ -1,0 +1,21 @@
+{
+    "Id": "Benchmark1-3",
+    "Name": "Single-Thread",
+    "Iterations": 3,
+    "MultiThreaded": false,
+    "MaxThreads": 1,
+    "Configurations": [
+        {
+            "ConfigId": "SomaCube",
+            "InitialDepth": 0
+        },
+        {
+            "ConfigId": "TetrisCube",
+            "InitialDepth": 0
+        },
+        {
+            "ConfigId": "BedlamCube",
+            "InitialDepth": 0
+        }
+    ]
+}

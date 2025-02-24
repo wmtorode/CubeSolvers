@@ -11,4 +11,10 @@ public class BenchmarkResult
     public long LongestRunDurationMs { get; set; }
     public long ShortestRunDurationMs { get; set; }
     public long AverageRunDurationMs { get; set; }
+
+
+    public string GetSummary()
+    {
+        return $"Benchmark for {ConfigName} Results: Max: {LongestRunDurationMs:n0}, Min: {ShortestRunDurationMs:n0}, Mean: {AverageRunDurationMs:n0} ms";
+    }
 }
