@@ -1,5 +1,6 @@
 package ca.jwolf.cubesolver
 
+import ca.jwolf.cubesolver.tools.DemoConfigCreatorTool
 import ca.jwolf.cubesolver.tools.SetWorkingDirTool
 import ca.jwolf.cubesolver.tools.Tool
 import ca.jwolf.cubesolver.utils.ProgramUtils
@@ -10,7 +11,8 @@ class App{
     fun runApp(args: Array<String>)
     {
         val tools: List<Tool> = listOf(
-            SetWorkingDirTool()
+            SetWorkingDirTool(),
+            DemoConfigCreatorTool()
         )
 
         ProgramUtils.writeFilledLine('#')
