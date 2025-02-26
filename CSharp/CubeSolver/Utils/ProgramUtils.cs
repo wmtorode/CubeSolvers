@@ -129,7 +129,10 @@ public class ProgramUtils
         var configs = dir.GetFiles().Where(f => f.Extension == ".json").ToList();
         var configNames = configs.Select(x => x.Name).ToArray();
         var configFile = GetUserSelection("Select a config file to load:", configNames);
-        Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configs[configFile].FullName));
+        
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        
+        Config config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configs[configFile].FullName), options);
         config.InitializePieces();
         return config;
         
@@ -141,7 +144,10 @@ public class ProgramUtils
         var configs = dir.GetFiles().Where(f => f.Extension == ".json").ToList();
         var configNames = configs.Select(x => x.Name).ToArray();
         var configFile = GetUserSelection("Select a benchmark file to load:", configNames);
-        BenchmarkSettings settings = JsonSerializer.Deserialize<BenchmarkSettings>(File.ReadAllText(configs[configFile].FullName));
+        
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        
+        BenchmarkSettings settings = JsonSerializer.Deserialize<BenchmarkSettings>(File.ReadAllText(configs[configFile].FullName), options);
         return settings;
         
     }

@@ -1,9 +1,8 @@
 package ca.jwolf.cubesolver.configs
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
+import com.fasterxml.jackson.annotation.JsonIgnore
 
-@Serializable
+
 class PuzzlePiece(
 
     val id: Int,
@@ -12,19 +11,21 @@ class PuzzlePiece(
     val components: List<SubPiece>
 )
     {
-    @Transient
+
+    @JsonIgnore
     var currentOrientation: Int = 0
 
-    @Transient
+    @JsonIgnore
     var maxOrientation: Int = 0
 
-    @Transient
+    @JsonIgnore
     private var orientations: MutableMap<Int, List<SubPiece>> = mutableMapOf()
 
     fun geometry(): List<SubPiece> {
         return orientations[currentOrientation]!!
     }
 
+    @JsonIgnore
     fun getInformationalText(): String {
         return "$id: $description"
     }

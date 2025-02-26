@@ -4,14 +4,18 @@
 
 plugins {
     id("buildlogic.kotlin-application-conventions")
-    kotlin("plugin.serialization") version "2.1.10"
+    id("org.jetbrains.kotlin.jvm")
 
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     implementation("org.apache.commons:commons-text")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
 tasks.getByName<JavaExec>("run") {

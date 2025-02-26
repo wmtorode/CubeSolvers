@@ -1,7 +1,5 @@
 package ca.jwolf.cubesolver.tools
 
-import kotlinx.serialization.json.Json
-
 import ca.jwolf.cubesolver.configs.PuzzleConfig
 import ca.jwolf.cubesolver.configs.PuzzlePiece
 import ca.jwolf.cubesolver.configs.SubPiece
@@ -32,13 +30,9 @@ class DemoConfigCreatorTool: Tool {
             puzzlePieces = listOf(puzzlePiece)
         )
 
-        val prettyJson = Json {
-            prettyPrint = true
-            encodeDefaults = true
-        }
 
-        val configJson = prettyJson.encodeToString(config)
-        File(Paths.get(ProgramUtils.ConfigurationDirectory, "DemoConfigKotlin.json").toString()).writeBytes(configJson.toByteArray())
+        val configJson = ProgramUtils.jsonMapper.writeValueAsBytes(config)
+        File(Paths.get(ProgramUtils.ConfigurationDirectory, "DemoConfigKotlin.json").toString()).writeBytes(configJson)
         return true
 
 

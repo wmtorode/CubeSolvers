@@ -1,5 +1,14 @@
 package ca.jwolf.cubesolver.utils
 
+import ca.jwolf.cubesolver.configs.PuzzleConfig
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.json.JsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+
 import java.nio.file.Paths
 import kotlin.system.exitProcess
 
@@ -8,6 +17,11 @@ class ProgramUtils {
     companion object {
         private const val LINE_LENGTH = 100
         private var indent = 0
+        val jsonMapper = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .build().registerKotlinModule()
 
         var ConfigurationDirectory = ""
             private set
@@ -102,6 +116,15 @@ class ProgramUtils {
 
 
             return (selected - 1)
+        }
+
+        fun getConfigFromUser(): PuzzleConfig {
+            val fileList = Paths.get(ConfigurationDirectory).toFile().listFiles()!!.map { it.name }.filter { it.endsWith(".json") }
+            val configFile = getUserSelection("Select a config file to load:", fileList)
+
+            val config =  jsonMapper.readValue<PuzzleConfig>(Paths.get(ConfigurationDirectory, fileList[configFile]).toFile().readBytes().decodeToString())
+            config.initializePieces()
+            return config
         }
     }
 

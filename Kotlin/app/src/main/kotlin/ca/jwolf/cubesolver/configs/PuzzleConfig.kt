@@ -1,9 +1,7 @@
 package ca.jwolf.cubesolver.configs
 
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonIgnore
 
-
-@Serializable
 class PuzzleConfig(
     val id: String,
     val displayName: String,
@@ -18,6 +16,7 @@ class PuzzleConfig(
         puzzlePieces.forEach { it.initialize() }
     }
 
+    @JsonIgnore
     fun getPuzzlePieceSymbolLookup(): Map<Int, String> {
         return puzzlePieces.associate { it.id to it.symbol } + (-1 to "-")
     }

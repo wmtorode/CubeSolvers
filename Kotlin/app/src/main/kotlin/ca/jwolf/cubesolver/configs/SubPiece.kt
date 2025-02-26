@@ -1,8 +1,5 @@
 package ca.jwolf.cubesolver.configs
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class SubPiece(var x: Int = 0, var y: Int = 0, var z: Int = 0): Comparable<SubPiece> {
 
     fun clone(): SubPiece {
