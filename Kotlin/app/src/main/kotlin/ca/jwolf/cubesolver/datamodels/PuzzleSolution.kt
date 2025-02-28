@@ -3,7 +3,7 @@ package ca.jwolf.cubesolver.datamodels
 import ca.jwolf.cubesolver.configs.PuzzlePiece
 
 class PuzzleSolution{
-    private val size: Int
+    val size: Int
     private val puzzlePieceSymbolsLookup: Map<Int, String>
     private var cubes: Array<Array<Array<Int>>> = emptyArray()
 

@@ -1,9 +1,6 @@
 package ca.jwolf.cubesolver
 
-import ca.jwolf.cubesolver.tools.ConfigVisualizer
-import ca.jwolf.cubesolver.tools.DemoConfigCreatorTool
-import ca.jwolf.cubesolver.tools.SetWorkingDirTool
-import ca.jwolf.cubesolver.tools.Tool
+import ca.jwolf.cubesolver.tools.*
 import ca.jwolf.cubesolver.utils.ProgramUtils
 
 
@@ -14,7 +11,8 @@ class App{
         val tools: List<Tool> = listOf(
             SetWorkingDirTool(),
             DemoConfigCreatorTool(),
-            ConfigVisualizer()
+            ConfigVisualizer(),
+            PieceInfoTool()
         )
 
         ProgramUtils.writeFilledLine('#')

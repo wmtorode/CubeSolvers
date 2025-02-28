@@ -32,7 +32,7 @@ class PuzzlePiece(
     
     fun rotate(): Boolean {
         currentOrientation++
-        if (currentOrientation > maxOrientation) {
+        if (currentOrientation >= maxOrientation) {
             currentOrientation = maxOrientation - 1
             return false
         }
