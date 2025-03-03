@@ -12,7 +12,8 @@ class App{
             SetWorkingDirTool(),
             DemoConfigCreatorTool(),
             ConfigVisualizer(),
-            PieceInfoTool()
+            PieceInfoTool(),
+            CoverMatrixVisualizerTool()
         )
 
         ProgramUtils.writeFilledLine('#')

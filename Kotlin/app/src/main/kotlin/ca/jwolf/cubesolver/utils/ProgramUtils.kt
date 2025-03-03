@@ -126,6 +126,10 @@ class ProgramUtils {
             config.initializePieces()
             return config
         }
+
+        //extension methods
+        fun Long.formatWithCommas(): String = String.format("%,d", this)
+
     }
 
 }
