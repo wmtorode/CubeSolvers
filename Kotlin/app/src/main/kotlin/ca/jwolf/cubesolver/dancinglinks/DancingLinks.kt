@@ -18,6 +18,134 @@ class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
         initializeCoverNodes(maxtrixColumnNames, coverMatrix)
     }
 
+    fun getConvertedSolutions(pieceCount:Int,partialSolution:List<CoverNode>? = null):List<List<Int>> {
+        var partialData: MutableList<Int> = mutableListOf()
+
+        partialSolution?.forEach { node ->
+            var tempNode = node
+            do {
+                partialData.add(tempNode.column!!.columnId)
+                tempNode = tempNode.right!!
+            } while (tempNode != node)
+
+            partialData.add(-1)
+        }
+
+//        val size = maxtrixSize + pieceCount
+        val convertedSolutions: MutableList<MutableList<Int>> = mutableListOf()
+        solutions.forEach { solution ->
+            val solutionData = mutableListOf<Int>()
+            solution.forEach {node ->
+                var tempNode = node
+                do {
+                    solutionData.add(tempNode.column!!.columnId)
+                    tempNode = tempNode.right!!
+                } while (tempNode != node)
+
+                solutionData.add(-1)
+            }
+
+            if (partialData.isNotEmpty()) {
+                solutionData.addAll(partialData)
+            }
+
+            convertedSolutions.add(solutionData)
+        }
+
+        return convertedSolutions
+    }
+
+    fun search(column: Int = 0, maxDepth: Int = 0){
+        if ((maxDepth != 0 && column >= maxDepth) || headerNode.right == headerNode) {
+            solutions.add(partialSolution.slice(0 until column).toMutableList())
+            return
+        }
+
+        var currentNode = getMinColumn()
+
+        cover(currentNode)
+
+        var node = currentNode.down!!
+        while (node != currentNode) {
+            if (partialSolution.size <= column)
+            {
+                partialSolution.add(node)
+            }
+            else
+            {
+                partialSolution[column] = node
+            }
+
+            var tempNode = node.right!!
+            while (tempNode != node) {
+                cover(tempNode.column!!)
+                tempNode = tempNode.right!!
+            }
+            search(column + 1, maxDepth)
+            node = partialSolution[column]
+            currentNode = node.column!!
+
+            tempNode = node.left!!
+            while (tempNode != node) {
+                uncover(tempNode.column!!)
+                tempNode = tempNode.left!!
+            }
+
+            node = node.down!!
+        }
+
+        uncover(currentNode)
+    }
+
+    private fun cover(coverNode: CoverNode) {
+        coverNode.right!!.left = coverNode.left
+        coverNode.left!!.right = coverNode.right
+
+        var node = coverNode.down!!
+        while (node != coverNode) {
+            var tempNode = node.right!!
+            while (tempNode != node) {
+                tempNode.down!!.up = tempNode.up
+                tempNode.up!!.down = tempNode.down
+                tempNode.column!!.size--
+                tempNode = tempNode.right!!
+            }
+            node = node.down!!
+        }
+    }
+
+    private fun uncover(coverNode: CoverNode) {
+        var node = coverNode.up!!
+        while (node != coverNode) {
+            var tempNode = node.left!!
+            while (tempNode != node) {
+                tempNode.column!!.size++
+                tempNode.down!!.up = tempNode
+                tempNode.up!!.down = tempNode
+
+                tempNode = tempNode.left!!
+            }
+            node = node.up!!
+        }
+
+        coverNode.right!!.left = coverNode
+        coverNode.left!!.right = coverNode
+    }
+    private fun getMinColumn(): CoverNode {
+        var node = headerNode.right!!
+        var minNode = node
+
+        var minSize = node.size
+        while (node != headerNode) {
+            if (node.size < minSize) {
+                minNode = node
+                minSize = node.size
+            }
+            node = node.right!!
+        }
+        return minNode
+    }
+
 
     private fun initializeCoverNodes(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
         coverNodes.clear()

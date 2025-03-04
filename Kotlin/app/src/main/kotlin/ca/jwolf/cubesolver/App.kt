@@ -13,7 +13,8 @@ class App{
             DemoConfigCreatorTool(),
             ConfigVisualizer(),
             PieceInfoTool(),
-            CoverMatrixVisualizerTool()
+            CoverMatrixVisualizerTool(),
+            SingleThreadedSolver()
         )
 
         ProgramUtils.writeFilledLine('#')

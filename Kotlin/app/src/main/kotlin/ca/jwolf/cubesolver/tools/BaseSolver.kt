@@ -1,8 +1,12 @@
 package ca.jwolf.cubesolver.tools
 
 import ca.jwolf.cubesolver.configs.PuzzleConfig
+import ca.jwolf.cubesolver.configs.PuzzlePiece
 import ca.jwolf.cubesolver.configs.SubPiece
 import ca.jwolf.cubesolver.datamodels.PuzzleSolution
+import ca.jwolf.cubesolver.utils.ProgramUtils
+import java.io.File
+import java.nio.file.Paths
 import java.util.BitSet
 
 abstract class BaseSolver {
@@ -13,6 +17,15 @@ abstract class BaseSolver {
     // inheriting classes must set these prior to it being useful
     protected lateinit var solution: PuzzleSolution
     protected lateinit var config: PuzzleConfig
+
+    protected fun printPieceData()
+    {
+        config.puzzlePieces.forEach { piece ->
+            ProgramUtils.writeLine(getPieceInfo(piece))
+        }
+    }
+
+
 
     protected fun generateCoverMatrix(){
 
@@ -38,6 +51,27 @@ abstract class BaseSolver {
                     }
                 }
             }
+        }
+    }
+
+    protected fun writeToTextFile(solutions: Map<String, PuzzleSolution>, sortedKeys: List<String>)
+    {
+        File(Paths.get(ProgramUtils.OutputDirectory, "${config.outputFileName}.txt").toString()).bufferedWriter().use { writer ->
+            config.puzzlePieces.forEach { piece ->
+                writer.write(getPieceInfo(piece))
+                writer.newLine()
+            }
+
+            writer.newLine()
+            writer.newLine()
+
+            var solutionNumber = 0
+            sortedKeys.forEach { key ->
+                solutions[key]!!.writeToTextFile("Solution ${solutionNumber}", writer)
+                solutionNumber++
+                writer.newLine()
+            }
+
         }
     }
 
@@ -68,6 +102,10 @@ abstract class BaseSolver {
             return -1
         }
         return config.puzzlePieces.size + subPiece.x + (subPiece.y * config.cubeSize) + (subPiece.z * config.cubeSize * config.cubeSize)
+    }
+
+    private fun getPieceInfo(puzzlePiece: PuzzlePiece): String {
+        return "Piece ${puzzlePiece.id}, using Symbol: ${puzzlePiece.symbol}, has ${puzzlePiece.components.size} Cube(s) and ${puzzlePiece.maxOrientation} Unique Orientation(s)"
     }
 
 }

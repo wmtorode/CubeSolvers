@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
@@ -44,20 +43,33 @@ class ProgramUtils {
             BenchmarkConfigurationDirectory = Paths.get(ConfigurationDirectory, "Benchmarks").toString()
         }
 
-        fun writeLine(text: String ="")
+        fun writeLine(text: String ="", actuallyWrite: Boolean = true)
         {
+            if (!actuallyWrite) {
+                return
+            }
+
             val prefix = " ".repeat(indent)
             println(prefix + text)
         }
 
-        fun reWrite(text: String="")
+        fun reWrite(text: String="", actuallyWrite: Boolean = true)
         {
+            if (!actuallyWrite) {
+                return
+            }
+
             val prefix = " ".repeat(indent)
             print("\r$prefix$text")
         }
 
-        fun writeFilledLine(fillCharacter: Char, text: String="")
+        fun writeFilledLine(fillCharacter: Char, text: String="", actuallyWrite: Boolean = true)
         {
+            if (!actuallyWrite) {
+                return
+            }
+
+
             val targetLineLength = LINE_LENGTH - indent
             val textLength = text.length
 
@@ -129,6 +141,7 @@ class ProgramUtils {
 
         //extension methods
         fun Long.formatWithCommas(): String = String.format("%,d", this)
+        fun Int.formatWithCommas(): String = String.format("%,d", this)
 
     }
 
