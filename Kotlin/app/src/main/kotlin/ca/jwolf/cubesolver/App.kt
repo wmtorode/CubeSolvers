@@ -14,7 +14,8 @@ class App{
             ConfigVisualizer(),
             PieceInfoTool(),
             CoverMatrixVisualizerTool(),
-            SingleThreadedSolver()
+            SingleThreadedSolver(),
+            ThreadedSolver()
         )
 
         ProgramUtils.writeFilledLine('#')

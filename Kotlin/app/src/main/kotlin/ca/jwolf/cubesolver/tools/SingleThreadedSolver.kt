@@ -6,6 +6,7 @@ import ca.jwolf.cubesolver.datamodels.PuzzleSolution
 import ca.jwolf.cubesolver.datamodels.Solver
 import ca.jwolf.cubesolver.utils.ProgramUtils
 import ca.jwolf.cubesolver.utils.ProgramUtils.Companion.formatWithCommas
+import kotlinx.coroutines.runBlocking
 import kotlin.time.measureTime
 
 class SingleThreadedSolver: Tool, Solver, BaseSolver() {
@@ -19,15 +20,20 @@ class SingleThreadedSolver: Tool, Solver, BaseSolver() {
     override fun run(): Boolean {
         val puzzleConfig = ProgramUtils.getConfigFromUser()
         lastSolveTimeMs = -1
-        solve(puzzleConfig, 0, 0, true, true)
+
+        // we want to block on this because this process is meant to be single threaded
+        runBlocking {
+            solve(puzzleConfig, 0, 0, true, true)
+        }
+
         return true
     }
 
-    override fun addSolution(solutions: Map<String, PuzzleSolution>, duplicates: Int) {
+    override suspend fun addSolutions(potentialSolutions: Map<String, PuzzleSolution>, duplicates: Int) {
         // intentionally empty, this isn't needed for single threaded operations
     }
 
-    override fun solve(
+    override suspend fun solve(
         puzzleConfig: PuzzleConfig,
         initialDepth: Int,
         maxThreads: Int,
@@ -62,11 +68,7 @@ class SingleThreadedSolver: Tool, Solver, BaseSolver() {
             val processedSolutions: List<PuzzleSolution>
 
             elapsed = measureTime {
-                val zDivider = config.cubeSize * config.cubeSize
-                val unprocessedSolutions = dlx.getConvertedSolutions(config.puzzlePieces.size)
-                processedSolutions = unprocessedSolutions.map { solution ->
-                    PuzzleSolution(config.cubeSize, config.getPuzzlePieceSymbolLookup(), zDivider, solution)
-                }
+                processedSolutions = dlx.getPuzzleSolutions(config)
             }
 
             ProgramUtils.writeFilledLine('-', "Conversion from Matrix solutions to Puzzle solutions took ${elapsed.inWholeMilliseconds.formatWithCommas()} ms", verbose)

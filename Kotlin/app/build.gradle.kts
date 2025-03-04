@@ -16,6 +16,7 @@ dependencies {
     implementation("org.apache.commons:commons-text")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }
 
 tasks.getByName<JavaExec>("run") {

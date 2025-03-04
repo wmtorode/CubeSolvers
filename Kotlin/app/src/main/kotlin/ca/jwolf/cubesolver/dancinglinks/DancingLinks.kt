@@ -1,6 +1,8 @@
 package ca.jwolf.cubesolver.dancinglinks
 
+import ca.jwolf.cubesolver.configs.PuzzleConfig
 import ca.jwolf.cubesolver.datamodels.CoverNode
+import ca.jwolf.cubesolver.datamodels.PuzzleSolution
 import java.util.BitSet
 
 class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
@@ -18,8 +20,18 @@ class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
         initializeCoverNodes(maxtrixColumnNames, coverMatrix)
     }
 
-    fun getConvertedSolutions(pieceCount:Int,partialSolution:List<CoverNode>? = null):List<List<Int>> {
-        var partialData: MutableList<Int> = mutableListOf()
+    fun clear()
+    {
+        solutions.clear()
+        coverNodes.clear()
+        partialSolution.clear()
+        headerNode = CoverNode()
+    }
+
+    fun getPuzzleSolutions(config: PuzzleConfig, partialSolution:List<CoverNode>? = null):List<PuzzleSolution> {
+        val partialData: MutableList<Int> = mutableListOf()
+        val zDivider = config.cubeSize * config.cubeSize
+        val pieceLookup = config.getPuzzlePieceSymbolLookup()
 
         partialSolution?.forEach { node ->
             var tempNode = node
@@ -32,7 +44,7 @@ class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
         }
 
 //        val size = maxtrixSize + pieceCount
-        val convertedSolutions: MutableList<MutableList<Int>> = mutableListOf()
+        val convertedSolutions: MutableList<PuzzleSolution> = mutableListOf()
         solutions.forEach { solution ->
             val solutionData = mutableListOf<Int>()
             solution.forEach {node ->
@@ -49,7 +61,7 @@ class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
                 solutionData.addAll(partialData)
             }
 
-            convertedSolutions.add(solutionData)
+            convertedSolutions.add(PuzzleSolution(config.cubeSize, pieceLookup, zDivider, solutionData))
         }
 
         return convertedSolutions
@@ -95,6 +107,30 @@ class DancingLinks(maxtrixColumnNames: List<Int>, coverMatrix: List<BitSet>) {
         }
 
         uncover(currentNode)
+    }
+
+    fun applyPartialCover(coverNodes: List<CoverNode>){
+        val columns: MutableList<Int> = mutableListOf()
+        coverNodes.forEach { coverNode ->
+            var tempNode = coverNode
+            while(!columns.contains(tempNode.column!!.columnId)) {
+                columns.add(tempNode.column!!.columnId)
+                tempNode = tempNode.right!!
+            }
+        }
+
+        columns.forEach { column ->
+            var node = headerNode.right!!
+            while (node != headerNode) {
+                if (node.column!!.columnId == column)
+                {
+                    cover(node)
+                    break
+                }
+                node = node.right!!
+            }
+        }
+
     }
 
     private fun cover(coverNode: CoverNode) {
