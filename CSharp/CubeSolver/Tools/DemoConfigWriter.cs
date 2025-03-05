@@ -26,7 +26,7 @@ public class DemoConfigWriter: ITool
         config.PuzzlePieces.Add(piece);
         
         var writeOptions = new JsonSerializerOptions { WriteIndented = true };
-        var filePath = Path.Combine(ProgramUtils.WorkingDirectory, "DemoConfig.json");
+        var filePath = Path.Combine(ProgramUtils.WorkingDirectory, "DemoConfigCSharp.json");
         File.WriteAllText(filePath, JsonSerializer.Serialize(config, writeOptions));
         
         Console.WriteLine("Wrote DemoConfig.json!");

@@ -1,0 +1,11 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+/buildSrc/src/main/kotlin/buildlogic.kotlin-application-conventions.gradle.kts
+/buildSrc/src/main/kotlin/buildlogic.kotlin-common-conventions.gradle.kts
+/buildSrc/src/main/kotlin/buildlogic.kotlin-library-conventions.gradle.kts
+/buildSrc/build.gradle.kts
+/buildSrc/.kotlin/errors/errors-1740367474157.log
+/buildSrc/settings.gradle.kts

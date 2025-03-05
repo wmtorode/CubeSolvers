@@ -1,0 +1,13 @@
+{
+    "Id": "Benchmark32-100Soma",
+    "Name": "32 Threads, 100 Iterations (Soma Only)",
+    "Iterations": 100,
+    "MultiThreaded": true,
+    "MaxThreads": 32,
+    "Configurations": [
+        {
+            "ConfigId": "SomaCube",
+            "InitialDepth": 1
+        }
+    ]
+}
