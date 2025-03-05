@@ -15,7 +15,8 @@ class App{
             PieceInfoTool(),
             CoverMatrixVisualizerTool(),
             SingleThreadedSolver(),
-            ThreadedSolver()
+            ThreadedSolver(),
+            BenchmarkRunner()
         )
 
         ProgramUtils.writeFilledLine('#')

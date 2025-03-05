@@ -1,5 +1,6 @@
 package ca.jwolf.cubesolver.utils
 
+import ca.jwolf.cubesolver.benchmarking.BenchmarkSettings
 import ca.jwolf.cubesolver.configs.PuzzleConfig
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
@@ -136,6 +137,14 @@ class ProgramUtils {
 
             val config =  jsonMapper.readValue<PuzzleConfig>(Paths.get(ConfigurationDirectory, fileList[configFile]).toFile().readBytes().decodeToString())
             config.initializePieces()
+            return config
+        }
+
+        fun getBenchmarkSettingsFromUser(): BenchmarkSettings {
+            val fileList = Paths.get(BenchmarkConfigurationDirectory).toFile().listFiles()!!.map { it.name }.filter { it.endsWith(".json") }
+            val configFile = getUserSelection("Select a benchmark file to load:", fileList)
+
+            val config =  jsonMapper.readValue<BenchmarkSettings>(Paths.get(BenchmarkConfigurationDirectory, fileList[configFile]).toFile().readBytes().decodeToString())
             return config
         }
 

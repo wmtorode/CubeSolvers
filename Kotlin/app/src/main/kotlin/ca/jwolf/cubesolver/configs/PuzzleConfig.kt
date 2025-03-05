@@ -7,7 +7,7 @@ class PuzzleConfig(
     val displayName: String,
     val outputFileName: String,
     val cubeSize: Int,
-    val verbose: Boolean,
+    var verbose: Boolean,
     val puzzlePieces: List<PuzzlePiece>
     )
 {
