@@ -10,7 +10,7 @@ public class PieceInfo: ITool
     {
         var config = ProgramUtils.GetConfigFromUser();
 
-        var solution = new PuzzleSolution(config.CubeSize, config.GetPuzzlePieceSymbolLut());
+        var solution = new PuzzleSolution(config.CubeSize, config.PuzzlePieceSymbolLut);
 
         var pieceNames = config.PuzzlePieces.Select(x => x.InfoName).ToArray();
 

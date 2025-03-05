@@ -92,9 +92,10 @@ public class BenchmarkRunner: ITool
         _configs = new List<Config>();
         DirectoryInfo dir = new DirectoryInfo(ProgramUtils.WorkingDirectory);
         var configFiles = dir.GetFiles().Where(f => f.Extension == ".json").ToList();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         foreach (var configFile in configFiles)
         {
-            var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile.FullName));
+            var config = JsonSerializer.Deserialize<Config>(File.ReadAllText(configFile.FullName), options);
             config.InitializePieces();
             config.Verbose = false;
             _configs.Add(config);

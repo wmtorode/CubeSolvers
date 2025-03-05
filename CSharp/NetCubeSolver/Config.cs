@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace NetCubeSolver;
 
 public class Config
@@ -9,27 +11,19 @@ public class Config
     public int UpdateInterval { get; set; }
     public bool Verbose { get; set; }
     public List<PuzzlePiece> PuzzlePieces { get; set; } = new();
+    
+    [JsonIgnore]
+    public Dictionary<int, string> PuzzlePieceSymbolLut { get; set; } = new();
 
 
     public void InitializePieces()
     {
+        PuzzlePieceSymbolLut.Clear();
         foreach (var piece in PuzzlePieces)
         {
             piece.Initialize();
+            PuzzlePieceSymbolLut.Add(piece.Id, piece.Symbol);
         }
-    }
-    
-    public Dictionary<int, string> GetPuzzlePieceSymbolLut()
-    {
-        Dictionary<int, string> puzzlePieceLut = new();
-        foreach (var piece in PuzzlePieces)
-        {
-            puzzlePieceLut.Add(piece.Id, piece.Symbol);
-        }
-
-        puzzlePieceLut.Add(-1, "-");
-
-        
-        return puzzlePieceLut;
+        PuzzlePieceSymbolLut.Add(-1, "-");
     }
 }

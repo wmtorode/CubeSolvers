@@ -9,18 +9,16 @@ public class ThreadedDancingLinks
     private List<BitArray> CoverMatrix;
     private List<CoverNode> PartialSolution = new List<CoverNode>();
     private ISolver Solver;
-    private Dictionary<int, string> PieceLUT;
-    private int CubeSize;
+    private Config CubeConfig;
 
     public ThreadedDancingLinks(List<int> matrixColumnNames, List<BitArray> coverMatrix, List<CoverNode> partialSolution,
-        ISolver solver, int cubeSize, Dictionary<int, string> pieceLUT)
+        ISolver solver, Config cubeConfig)
     {
         MatrixColumnNames = matrixColumnNames;
         CoverMatrix = coverMatrix;
         PartialSolution = partialSolution;
         Solver = solver;
-        CubeSize = cubeSize;
-        PieceLUT = pieceLUT;
+        CubeConfig = cubeConfig;
     }
 
     public void Search(object? stateInfo)
@@ -29,15 +27,7 @@ public class ThreadedDancingLinks
         dancingLinks.ApplyPartialCover(PartialSolution);
         dancingLinks.Search();
 
-        var unprocessedSolutions = dancingLinks.ConvertedSolutions(PieceLUT.Count - 1, PartialSolution);
-        var solutions = new List<PuzzleSolution>();
-        int zDiv = CubeSize * CubeSize;
-        
-        foreach (var solution in unprocessedSolutions)
-        {
-            solutions.Add(PuzzleSolution.ConvertToSolution(CubeSize, PieceLUT,
-                zDiv, solution));
-        }
+        var solutions = dancingLinks.ConvertedSolutions(CubeConfig, PartialSolution);
         
         Dictionary<string, PuzzleSolution> uniqueSolutions = new();
         int duplicateSolutions = 0;

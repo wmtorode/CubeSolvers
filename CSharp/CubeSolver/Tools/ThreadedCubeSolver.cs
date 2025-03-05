@@ -34,7 +34,7 @@ public class ThreadedCubeSolver: BaseSolver, ITool, ISolver
         DuplicateSolutions = 0;
         
         CubeConfig = config;
-        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.GetPuzzlePieceSymbolLut());
+        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.PuzzlePieceSymbolLut);
         
         if (verbose)
         {
@@ -88,7 +88,6 @@ public class ThreadedCubeSolver: BaseSolver, ITool, ISolver
             ProgramUtils.Write($"Progressing using up to {newThreadCount} threads");
         }
         
-        var pieceLut = CubeConfig.GetPuzzlePieceSymbolLut();
         _doneEvent.Reset();
         var events = new ManualResetEvent[]
         {
@@ -101,7 +100,7 @@ public class ThreadedCubeSolver: BaseSolver, ITool, ISolver
         for(int i = 0; i < dancingLinks.Solutions.Count; i++)
         {
             var threadedDancingLinks = new ThreadedDancingLinks(MatrixColumnNames, CoverMatrix,
-                dancingLinks.Solutions[i], this, CubeConfig.CubeSize, pieceLut);
+                dancingLinks.Solutions[i], this, CubeConfig);
 
             ThreadPool.QueueUserWorkItem(threadedDancingLinks.Search);
         }

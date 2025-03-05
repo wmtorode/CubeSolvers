@@ -13,7 +13,7 @@ public class CoverMatrixVisualizer: BaseSolver, ITool
     {
         CubeConfig = ProgramUtils.GetConfigFromUser();
 
-        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.GetPuzzlePieceSymbolLut());
+        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.PuzzlePieceSymbolLut);
 
         var watch = System.Diagnostics.Stopwatch.StartNew();
         GenerateCoverMatrix();
@@ -22,31 +22,23 @@ public class CoverMatrixVisualizer: BaseSolver, ITool
         ProgramUtils.WriteFilledLine('-', $"Cover Matrix Generation took {watch.ElapsedMilliseconds} ms");
         Console.WriteLine();
         
-        var valueSize = MatrixColumnNames.Count;
-        
-        PrintValues(MatrixColumnNames, valueSize);
+        PrintValues(MatrixColumnNames);
         foreach (var row in CoverMatrix)
         {
-            PrintValues(row, valueSize);
+            PrintValues(row);
         }
         
         Console.WriteLine();
         ProgramUtils.WriteFilledLine('-');
         
-        ProgramUtils.Write($"Matrix Columns:{valueSize}");
+        ProgramUtils.Write($"Matrix Columns:{MatrixColumnNames.Count}");
         ProgramUtils.Write($"Matrix Rows:{CoverMatrix.Count}");
         
         return true;
     }
     
-    private void PrintValues( IEnumerable myList, int myWidth )  {
-        int i = myWidth;
+    private void PrintValues( IEnumerable myList)  {
         foreach ( Object obj in myList ) {
-            if ( i <= 0 )  {
-                i = myWidth;
-                Console.WriteLine();
-            }
-            i--;
             Console.Write( "{0,8}", obj );
         }
         Console.WriteLine();

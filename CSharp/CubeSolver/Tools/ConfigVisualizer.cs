@@ -10,7 +10,7 @@ public class ConfigVisualizer: ITool
     {
         var config = ProgramUtils.GetConfigFromUser();
 
-        var solution = new PuzzleSolution(config.CubeSize, config.GetPuzzlePieceSymbolLut());
+        var solution = new PuzzleSolution(config.CubeSize, config.PuzzlePieceSymbolLut);
 
         foreach (var piece in config.PuzzlePieces)
         {

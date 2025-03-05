@@ -27,8 +27,8 @@ public class DancingLinks
         PartialSolution.Clear();
         HeaderNode = null;
     }
-
-    public List<List<int>> ConvertedSolutions(int pieceCount, List<CoverNode>? partialSolution = null)
+    
+    public List<PuzzleSolution> ConvertedSolutions(Config config, List<CoverNode>? partialSolution = null)
     {
         
         List<int> partialData = new List<int>();
@@ -47,11 +47,15 @@ public class DancingLinks
             }
         }
 
-        var size = matrixSize + pieceCount;
-        var convertedSolutions = new List<List<int>>(Solutions.Count);
+        var size = matrixSize + config.PuzzlePieces.Count;
+        var zDivider = config.CubeSize * config.CubeSize;
+        var convertedSolutions = new List<PuzzleSolution>(Solutions.Count);
+        
+        List<int> data = new List<int>(size);
+        
         foreach (var solution in Solutions)
         {
-            List<int> data = new List<int>(size);
+            
             foreach (var node in solution)
             {
                 var tempNode = node;
@@ -69,7 +73,8 @@ public class DancingLinks
             {
                 data.AddRange(partialData);
             }
-            convertedSolutions.Add(data);
+            convertedSolutions.Add(PuzzleSolution.ConvertToSolution(config.CubeSize, config.PuzzlePieceSymbolLut, zDivider, data));
+            data.Clear();
         }
 
         return convertedSolutions;

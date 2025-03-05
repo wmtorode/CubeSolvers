@@ -29,7 +29,7 @@ public class CubeSolver: BaseSolver, ITool, ISolver
     {
         CubeConfig = config;
 
-        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.GetPuzzlePieceSymbolLut());
+        Solution = new PuzzleSolution(CubeConfig.CubeSize, CubeConfig.PuzzlePieceSymbolLut);
         
         if (verbose)
         // print out some basics about the piece
@@ -65,17 +65,9 @@ public class CubeSolver: BaseSolver, ITool, ISolver
             ProgramUtils.WriteFilledLine('-',
                 $"Dancing Links Generation took {watch.ElapsedMilliseconds:n0} ms and found {dancingLinks.Solutions.Count:n0} solutions");
         }
-        int zDiv = CubeConfig.CubeSize * CubeConfig.CubeSize;
 
         watch = Stopwatch.StartNew();
-        var unprocessedSolutions = dancingLinks.ConvertedSolutions(CubeConfig.PuzzlePieces.Count);
-        var solutions = new List<PuzzleSolution>();
-        var PieceLUT = CubeConfig.GetPuzzlePieceSymbolLut();
-        foreach (var solution in unprocessedSolutions)
-        {
-            solutions.Add(PuzzleSolution.ConvertToSolution(CubeConfig.CubeSize, PieceLUT,
-                zDiv, solution));
-        }
+        var solutions = dancingLinks.ConvertedSolutions(CubeConfig);
         watch.Stop();
         
         if (verbose)
