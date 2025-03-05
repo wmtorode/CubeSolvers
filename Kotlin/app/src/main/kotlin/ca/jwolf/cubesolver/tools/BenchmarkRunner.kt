@@ -86,6 +86,14 @@ class BenchmarkRunner: Tool {
         val results = jsonMapper.writeValueAsBytes(benchmarkResults)
         File(Paths.get(ProgramUtils.OutputDirectory, "BenchmarkResultsKotlin-${benchmarkSettings.id}.json").toString()).writeBytes(results)
 
+        ProgramUtils.writeLine()
+        ProgramUtils.writeFilledLine('=', "Benchmark Complete")
+        ProgramUtils.indent()
+        benchmarkResults.results.forEach { result ->
+            ProgramUtils.writeLine(result.getSummary())
+        }
+        ProgramUtils.unindent()
+
         return true
     }
 
