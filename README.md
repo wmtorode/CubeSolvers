@@ -52,8 +52,8 @@ that means if you wanted to search by hand for all solutions, you could line the
 the pieces, after each set of attempts, create a new order to try to insert the pieces until all possible orders have
 been exhausted. doing so would yield 12 factorial or 479,001,600 possible orders.
 
-Now recall that each piece may have up to 24 unique orientations and the math gets even bigger. of the 12 pieces in the
-Tetris Cube, 10 have 24 orientations and the 2 remaining 2 have 12 each. doing some math on this means that to exhaustively test
+Now recall that each piece may have up to 24 unique orientations and the math gets even bigger. Of the 12 pieces in the
+Tetris Cube, 10 have 24 orientations and the 2 remaining have 12 each. Doing some math on this means that to exhaustively test
 any particular piece order by trying all possible orientation combinations for it means you would try 9,130,086,859,014,144
 unique orientation combinations **per piecing ordering** meaning a complete exhaustive test of all possible orderings
 with all possible orientation combinations would equate to 4,373,326,213,606,749,398,630,400 different combinations to try.
