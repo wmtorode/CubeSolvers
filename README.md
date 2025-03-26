@@ -1,13 +1,13 @@
 # CubeSolvers
 
 ## What is this?
-This repository is consists of multiple language implementations dedicated to solving cube polycube puzzles where 
+This repository is consists of multiple language implementations dedicated to solving cubic polycube puzzles where 
 the objective is to take a set of polycube pieces and assemble them into an n x n x n cube with no empty spaces or 
-extruding parts. Polycube puzzles will often have multiple possible solutions, so solutions must be able to find 
+extruding parts. Polycube puzzles will often have multiple possible solutions, so implementations must be able to find 
 them all. In addition to unique solutions, due to the fact that the puzzle can be rotated, each solution will have an 
 additional 23 rotational duplicates.
 
-Note: while polycube puzzles can have differing sizes and dimensions, the implementations here are built for cube puzzles only where all
+Note: while polycube puzzles can have differing sizes and dimensions, the implementations here are built for cubic puzzles only where all
 dimensions of the puzzle are the same, such as 3x3x3 or 4x4x4 puzzles
 
 Note 2: implementations here are not built to handle mirrored or identical pieces as the same solution, instead each 
@@ -95,7 +95,7 @@ In the case of our tetris cube this results in a 76 column matrix with 4080 rows
 
 So, how much faster is this? Well a true apples-to-apples comparison has not been done. However the C# implementation 
 was tested to complete its search on my AMD Ryzen9 7950X in ~1.5 hours or roughly 28.5 times faster than Kurowski's 
-implementation took on his laptop. While the hardware runs at twice the close and IPC has been greatly improved since 
+implementation took on his laptop. While the hardware runs at twice the clock speed and IPC has been greatly improved since 
 those days, its very doubtable that it alone is the reason for such an increase in speed.
 
 #### Can we go even faster?
@@ -113,3 +113,150 @@ with efficient multi-threading capabilities.
 So how much better is it? Well running on that same 7950X as our single-threaded version and using all 16 cores/32 threads and an 
 initial search depth of 2 (this seems to be the optimal value for the Tetris Cube), the multi-thread C# version can 
 find all solutions within 6-7 minutes compared to 1.5 hours, so 12 - 15x faster.
+
+
+## Configurations
+
+### Puzzle Configs
+
+This is the primary configuration file for a puzzle, containing details of the puzzle, and all its pieces.
+
+example:
+```json
+{
+  "Id": "SomaCube",
+  "DisplayName": "Soma Cube",
+  "OutputFileName": "SomaCubeSolutions",
+  "CubeSize": 3,
+  "UpdateInterval": 150,
+  "Verbose": true,
+  "PuzzlePieces": [
+    {
+      "Id": 0,
+      "Symbol": "0",
+      "Description": "V",
+      "Components": [
+        {
+          "X": 0,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 1,
+          "Y": 0,
+          "Z": 0
+        },
+        {
+          "X": 0,
+          "Y": 1,
+          "Z": 0
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `Id`: a unique string identifier for this puzzle
+- `DisplayName`: a display name for the puzzle
+- `OutputFileName`: the name of the output file for solutions found for this puzzle, do not include a file extension
+- `CubeSize`: the length of one side of the cube, expressed in the number of polycubes. for example a size of 3 means that the dimensions of the puzzle are 3 polycubes x 3 polycubes x 3 polycubes or 27 cubes in total
+- `UpdateInterval`: Deprecated, a legacy field previously used to provide verbose updates while running
+- `Verbose`: when `true` additional information will be output to the console while running
+- `PuzzlePieces`: an array of all the puzzle pieces this puzzle contains
+
+### Puzzle Pieces
+
+This object describes the geometry and other information of a single puzzle piece within a puzzle
+
+example:
+```json
+{
+  "Id": 1,
+  "Symbol": "1",
+  "Description": "L",
+  "Components": [
+    {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    {
+      "X": 1,
+      "Y": 0,
+      "Z": 0
+    },
+    {
+      "X": 2,
+      "Y": 0,
+      "Z": 0
+    },
+    {
+      "X": 2,
+      "Y": 1,
+      "Z": 0
+    }
+  ]
+}
+```
+
+- `Id`: a unique identifier number to differentiate this piece from all others in the puzzle. Ideally this is enumerated from 0 - N-1 where N is the number of pieces in the puzzle. the value of `-1` is reserved by the application and should not be used.
+- `Symbol`: a symbol that will be used in solutions that represent this piece. Generally this should be a single character long
+- `Description`: a longer description of the piece, may describe its overall shape or characteristics
+- `Components`: an array of polycubes that describe a single orientation of the piece within the overall solution
+
+### PolyCubes
+
+This represents a single polycube within a puzzle piece and is made of up a simple X,Y,Z coordinates that represent a location within the puzzle as a whole. a set of these is sufficient to provide the geometry of a piece.
+
+example:
+```json
+{
+  "X": 2,
+  "Y": 1,
+  "Z": 0
+}
+```
+
+
+### Benchmark Settings
+
+In order to provide measurable results for how well a given implementation compares to others benchmarks can be configured and then run
+
+example:
+```json
+{
+    "Id": "Benchmark32-100Soma",
+    "Name": "32 Threads, 100 Iterations (Soma Only)",
+    "Iterations": 100,
+    "MultiThreaded": true,
+    "MaxThreads": 32,
+    "Configurations": [
+        {
+            "ConfigId": "SomaCube",
+            "InitialDepth": 1
+        }
+    ]
+}
+```
+
+- `Id`: a unique ID for this benchmark configuration, this ID will also be used for the resulting output file's name
+- `Name`: a user-friendly name/description of the configuration
+- `Iterations`: how many iterations of each configuration should be run for this benchmark
+- `MultiThreaded`: when `true` configurations will be run in multi-threaded mode, when `false` the single-threaded implementation will be used instead
+- `MaxThreads`: the maximum number of threads to use when using the multi-threaded runners
+- `Configurations`: a list of configurations to run as part of this benchmark
+
+### Benchmark Configurations
+
+example:
+```json
+{
+    "ConfigId": "SomaCube",
+    "InitialDepth": 1,
+    "MaxThreadsOverride": 0
+}
+```
+- `ConfigId`: the ID of the puzzle configuration to be run
+- `InitialDepth`: when using multi-threaded mode, the initial depth to run the first iteration of the DLX algorithm to
+- `MaxThreadsOverride`: Optional, when using multi-threaded mode, override the max thread count for this configuration. if omitted or set to 0, then the settings `MaxThreads` value will be used
